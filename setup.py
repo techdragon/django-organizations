@@ -46,6 +46,7 @@ setup(
     ],
     install_requires=[
         'Django>=1.4.2,<1.8',
+        'django-appconf>=0.6',
         'django-extensions>=0.9',
     ],
     test_suite='tests',
