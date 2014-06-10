@@ -1,7 +1,7 @@
 import django
 
 from django.conf import settings
-from django.db import models
+from django.db import connection, models
 from django.db.models.fields import FieldDoesNotExist
 from django.db.models.base import ModelBase
 from django.utils import six
@@ -79,13 +79,14 @@ class OrgMeta(ModelBase):
         """
         Adds the `users` field to the organization model
         """
-        try:
-            cls.module_registry[module]['OrgModel']._meta.get_field("users")
-        except FieldDoesNotExist:
-            cls.module_registry[module]['OrgModel'].add_to_class("users",
-                models.ManyToManyField(USER_MODEL,
-                        through=cls.module_registry[module]['OrgUserModel'].__name__,
-                        related_name="%(app_label)s_%(class)s"))
+        if getattr(connection.features, 'supports_joins', True):
+            try:
+                cls.module_registry[module]['OrgModel']._meta.get_field("users")
+            except FieldDoesNotExist:
+                cls.module_registry[module]['OrgModel'].add_to_class("users",
+                    models.ManyToManyField(USER_MODEL,
+                            through=cls.module_registry[module]['OrgUserModel'].__name__,
+                            related_name="%(app_label)s_%(class)s"))
 
     def update_org_users(cls, module):
         """
