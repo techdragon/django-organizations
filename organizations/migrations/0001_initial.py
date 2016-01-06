@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('is_active', models.BooleanField(default=True)),
                 ('created', django_extensions.db.fields.CreationDateTimeField(default=django.utils.timezone.now, verbose_name='created', editable=False, blank=True)),
                 ('modified', django_extensions.db.fields.ModificationDateTimeField(default=django.utils.timezone.now, verbose_name='modified', editable=False, blank=True)),
-                ('slug', django_extensions.db.fields.AutoSlugField(populate_from=b'name', editable=False, max_length=200, blank=True, help_text='The name in all lowercase, suitable for URL identification', unique=True)),
+                ('slug', django_extensions.db.fields.AutoSlugField(populate_from='name', editable=False, max_length=200, blank=True, help_text='The name in all lowercase, suitable for URL identification', unique=True)),
             ],
             options={
                 'ordering': ['name'],
